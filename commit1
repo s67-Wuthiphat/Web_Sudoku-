@@ -1,0 +1,17 @@
+function setup() {
+    createCanvas(540, 540);
+    background(255);
+    makeGrid();
+}
+
+function makeGrid() {
+    let size = width / 9;
+    let i = 0;
+    
+    while (i <= 9) {
+        strokeWeight((i % 3 === 0) ? 3 : 1);
+        line(i * size, 0, i * size, height);
+        line(0, i * size, width, i * size);
+        i++;
+    }
+}
