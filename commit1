@@ -1,5 +1,7 @@
 let data;   
 let sudoku = []; 
+let selectedRow = -1;
+let selectedCol = -1;
 
 function preload() {
     data = loadStrings("530070000.txt"); 
@@ -46,19 +48,19 @@ function setup() {
         x++;
     }
 
-    background(255);
-    makeGrid();
-    showNumbers();
 } 
 
 function draw() {
-    
+    background(255);
+    makeGrid();
+    showNumbers();
+    highlightCell();     
 }
 
 function makeGrid() {
     let size = width / 9;
     let i = 0;
-    
+    stroke(0);
     while (i <= 9) {
         strokeWeight((i % 3 === 0) ? 3 : 1);
         line(i * size, 0, i * size, height);
@@ -88,5 +90,29 @@ function showNumbers() {
             j++;
         }
         i++;
+    }
+}
+function highlightCell() {
+    if (selectedRow >= 0 && selectedCol >= 0) {
+        let size = width / 9;
+        noFill();
+        stroke(200, 100, 200);  
+        strokeWeight(4);   
+        rect(selectedCol * size, selectedRow * size, size, size);
+    }
+}
+
+
+
+function mousePressed() {
+    let size = width / 9;
+    let col = floor(mouseX / size);
+    let row = floor(mouseY / size);
+    console.log(row, col);
+
+    if (row >= 0 && row < 9 && col >= 0 && col < 9) {
+        selectedRow = row;
+        selectedCol = col;
+        console.log(row, col);
     }
 }
