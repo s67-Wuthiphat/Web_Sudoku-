@@ -1,7 +1,58 @@
+let data;   
+let sudoku = []; 
+
+function preload() {
+    data = loadStrings("530070000.txt"); 
+}
+
 function setup() {
     createCanvas(540, 540);
+    let temp = [];
+
+    let i = 0;
+    while (i < data.length) {
+        let line = data[i].trim();
+        if (line === "") {
+            if (temp.length === 9) {
+                sudoku.push(temp);
+            }
+            temp = [];
+        } else {
+            let arr = [];
+            let j = 0;
+            while (j < line.length) {
+                let ch = line[j];
+                arr.push(ch === "0" ? 0 : int(ch));
+                j++;
+            }
+            temp.push(arr);
+        }
+        i++;
+    }
+    if (temp.length === 9) {
+        sudoku.push(temp);
+    } 
+
+    let board = sudoku[0];
+    let x = 0;
+    while (x < 9) {
+        let y = 0;
+        while (y < 9) {
+            if (board[x][y] !== 0 && random(1) < 0.5) {
+                board[x][y] = 0; 
+            }
+            y++;
+        }
+        x++;
+    }
+
     background(255);
     makeGrid();
+    showNumbers();
+} 
+
+function draw() {
+    
 }
 
 function makeGrid() {
@@ -15,24 +66,27 @@ function makeGrid() {
         i++;
     }
 }
+
 function showNumbers() {
     let size = width / 9;
     textSize(32);
     textAlign(CENTER, CENTER);
     fill(0);
+    
+    let board = sudoku[0];
 
-    let r = 0;
-    while (r < 9) {
-        let c = 0;
-        while (c < 9) {
-            if (random(1) < 0.5) {
-                let num = int(random(1, 10));
-                let x = c * size + size / 2;
-                let y = r * size + size / 2;
-                text(num, x, y);
+    let i = 0;
+    while (i < 9) {
+        let j = 0;
+        while (j < 9) {
+            let num = board[i][j];
+            if (num !== 0) { 
+                let posX = j * size + size / 2;
+                let posY = i * size + size / 2;
+                text(num, posX, posY);
             }
-            c++;
+            j++;
         }
-        r++;
+        i++;
     }
 }
